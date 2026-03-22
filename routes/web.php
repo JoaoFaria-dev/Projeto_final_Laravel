@@ -12,3 +12,4 @@ Route::post('/register', [AuthController::class, 'store']);
 Route::get('/login', [AuthController::class, 'createLogin']);
 Route::post('/login', [AuthController::class, 'storeLogin']);
 
+Route::post('/logout', [AuthController::class, 'logout']);

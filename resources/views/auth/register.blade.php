@@ -1,25 +1,14 @@
 <x-layout>
 
-    <form action="/register" method="POST">
+    <x-layout.forms.form title="Registro" description="Comece a anotar suas ideias">
+        <form action="/register" method="POST" class="space-y-6">
+            @csrf
 
-        @csrf
+            <x-layout.forms.field name="name" label="Nome"/>
+            <x-layout.forms.field name="email" label="Email" type='email'/>
+            <x-layout.forms.field name="password" label="Senha" type='password'/>
 
-        <fieldset>
-            <legend>Registro</legend>
-
-            <label class="label">Nome</label>
-            <input type="text" name="name" id="name" placeholder="Nome" />
-            <x-layout.forms.error name="name"/>
-
-            <label class="label">Email</label>
-            <input type="email" name="email" class="input" placeholder="Email" />
-            <x-layout.forms.error name="email" />
-
-            <label class="label">Senha</label>
-            <input type="password" name="password" class="input" placeholder="Senha" />
-            <x-layout.forms.error name="password" />
-
-            <fieldset class="fieldset">
+            <fieldset class="fieldset space-y-2">
                 <legend class="fieldset-legend">Papel</legend>
                 <select name="role" class="select">
                     <option disabled selected>Escolha seu papel</option>
@@ -28,12 +17,16 @@
                 </select>
             </fieldset>
             <x-layout.forms.error name="role" />
-            <div>
+
+            <div class="space-y-2">
                 <p>Já tem conta?
                     <a href="/login">Login</a>
                 </p>
             </div>
-            <button class="btn btn-neutral mt-4">Cadastrar</button>
-        </fieldset>
-    </form>
+            <button class="btn mt-2">Cadastrar</button>
+
+        </form>
+
+    </x-layout.forms.form>
+
 </x-layout>

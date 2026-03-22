@@ -1,26 +1,19 @@
 <x-layout>
-     <form action="/login" method="POST">
-        @csrf
 
-        <legend class="fieldset-legend">Login</legend>
+    <x-layout.forms.form title='Login' description='Faça login na sua conta'>
 
-            <label class="label">Email</label>
-            <input type="email" name="email" class="input" placeholder="Email" />
-            <x-layout.forms.error name="email" />
-
-            <label class="label">Senha</label>
-            <input type="password" name="password" class="input" placeholder="Senha" />
-            <x-layout.forms.error name="password"/>
-
+        <form action="/login" method="POST" class="space-y-6">
+            @csrf
+            <x-layout.forms.field name="email" label="Email" type='email'/>
+            <x-layout.forms.field name="password" label="Senha" type='password'/>
             <div>
                 <p>Ainda não tem conta?
                     <a href="/register">Registrar</a>
                 </p>
-
             </div>
-
             <button class="btn btn-neutral mt-4">Logar</button>
+        </form>
 
-     </form>
+    </x-layout.forms.form>
 
 </x-layout>

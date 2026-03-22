@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -21,7 +23,7 @@ class AuthController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RegisterRequest $request)
     {
 
         $user = new User();
@@ -41,17 +43,20 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function storeLogin(Request $request)
+    public function storeLogin(UserRequest $request)
     {
-        $user = User::where('email', $request->validate(['email']))->first();
+
+    $credenciais = $request->validated();
+
+        $user = User::where('email', $credenciais['email'])->first();
 
         if ($user) {
         }
 
-        if (Auth::attempt($request->validate())) {
+        if (Auth::attempt($credenciais)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('sucess', 'You are now logged in.');
         }
 
         return back()->withErrors([
@@ -59,37 +64,10 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }
