@@ -5,15 +5,40 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
+use App\statusIdea;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class IdeaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $user = Auth::user();
+
+        $status = $request->status;
+
+        if (! in_array($status, statusIdea::value())) {
+            $status = null;
+        }
+
+        $ideas = Auth::user()
+            ->ideas()
+            ->when(in_array($request->status, statusIdea::value()), fn ($query) => $query
+                ->where('status', $status))
+            ->get();
+
+        // select status, count(*) from ideas group by status
+
+        return view('components.ideas.index', [
+            'ideas' => $ideas,
+            'statusContador' => Idea::statusCount(Auth::user()),
+        ]);
+
     }
 
     /**
@@ -21,7 +46,7 @@ class IdeaController extends Controller
      */
     public function create()
     {
-        //
+        return view ('components.ideas.create');
     }
 
     /**
@@ -29,7 +54,15 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request)
     {
-        //
+        Auth::user()->ideas()->create([
+            'title' => request('title'),
+            'description' => request('description'),
+            'status' => request('status'),
+           /*  'link' => request('link')
+
+ */
+        ]);
+        return redirect('/ideas');
     }
 
     /**
@@ -37,7 +70,9 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        //
+        return view('components.ideas.show', [
+            'idea' => $idea
+        ]);
     }
 
     /**
@@ -45,7 +80,9 @@ class IdeaController extends Controller
      */
     public function edit(Idea $idea)
     {
-        //
+        return view ('components.ideas.edit',[
+            'idea' => $idea
+        ]);
     }
 
     /**
@@ -53,7 +90,11 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
-        //
+        Gate::authorize('modify', $idea);
+        $idea->description = $request->description;
+        $idea->status = $request->status;
+        $idea->update();
+        return redirect("/ideas/{$idea->id}");
     }
 
     /**
@@ -61,6 +102,7 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea)
     {
-        //
+        $idea->delete();
+        return redirect('/ideas');
     }
 }

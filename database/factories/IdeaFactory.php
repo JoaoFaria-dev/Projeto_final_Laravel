@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Idea;
 use App\Models\User;
+use App\statusIdea;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,8 +22,9 @@ class IdeaFactory extends Factory
         return [
             'user_id' => User::factory(),
             'title' => fake()->sentence(),
-            'descripition' => fake()->paragraph(),
-            'links' => [fake()->url()]
+            'description' => fake()->paragraph(),
+            'status' => fake()->randomElement(statusIdea::cases())->value,
+            'links' => [fake()->url()],
         ];
     }
 }

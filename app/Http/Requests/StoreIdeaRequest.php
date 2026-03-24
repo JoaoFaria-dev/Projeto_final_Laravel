@@ -12,7 +12,7 @@ class StoreIdeaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,10 @@ class StoreIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'min:5'],
+            'description' => ['required'],
+            'status' => ['required'],
+            /* 'link' => ['required'] */
         ];
     }
 }

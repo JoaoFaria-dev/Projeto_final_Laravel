@@ -13,7 +13,7 @@ class IdeaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class IdeaPolicy
      */
     public function view(User $user, Idea $idea): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -35,10 +35,12 @@ class IdeaPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Idea $idea): bool
+  /*   public function update(User $user, Idea $idea)
     {
-        return false;
+        return $user->id === $idea->register_id
+            ? Response::allow() : Response::denyAsNotFound();
     }
+ */
 
     /**
      * Determine whether the user can delete the model.

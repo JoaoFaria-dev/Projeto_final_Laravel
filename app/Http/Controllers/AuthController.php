@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -26,7 +25,7 @@ class AuthController extends Controller
     public function store(RegisterRequest $request)
     {
 
-        $user = new User();
+        $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
@@ -46,7 +45,7 @@ class AuthController extends Controller
     public function storeLogin(UserRequest $request)
     {
 
-    $credenciais = $request->validated();
+        $credenciais = $request->validated();
 
         $user = User::where('email', $credenciais['email'])->first();
 
@@ -64,10 +63,12 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }
