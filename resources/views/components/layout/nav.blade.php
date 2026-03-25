@@ -6,6 +6,20 @@
             </a>
         </div>
 
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 flex gap-2">
+                @can('admin')
+                    <li><a href="/admin" class="btn btn-outlined">Admin</a></li>
+                @endcan
+                @auth
+                    <a href="/user" class="btn {{ request()->is('user') ? 'btn-outlined' : '' }}">
+                        Usuario
+                    </a>
+                @endauth
+
+            </ul>
+        </div>
+
         <div class="flex gap-x-6 items-center">
 
             @guest
@@ -24,5 +38,3 @@
         </div>
     </div>
 </nav>
-
-

@@ -26,9 +26,9 @@ class IdeaController extends Controller
             $status = null;
         }
 
-        $ideas = Auth::user()
+        $ideas = $user
             ->ideas()
-            ->when(in_array($request->status, statusIdea::value()), fn ($query) => $query
+            ->when(in_array($status, statusIdea::value()), fn ($query) => $query
                 ->where('status', $status))
             ->get();
 
@@ -36,9 +36,8 @@ class IdeaController extends Controller
 
         return view('components.ideas.index', [
             'ideas' => $ideas,
-            'statusContador' => Idea::statusCount(Auth::user()),
+            'statusContador' => Idea::statusCount($user),
         ]);
-
     }
 
     /**

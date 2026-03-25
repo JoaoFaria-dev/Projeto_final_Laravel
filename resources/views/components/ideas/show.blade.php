@@ -3,7 +3,7 @@
     <div class="py-8 max-w-4xl mx-auto">
 
         <div class="flex justify-between">
-            <a href="{{ route('ideas.index') }}">
+            <a href="{{ route('ideas.index') }}" class="btn btn-outlined">
                 Volte para as suas ideias
             </a>
 

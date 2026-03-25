@@ -23,21 +23,20 @@ class Idea extends Model
         'status' => statusIdea::PENDING->value,
     ];
 
-    public static function statusCount(User $user): Collection
+    public static function statusCount(?User $user = null): Collection
     {
+        $query = $user ? $user->ideas() : self::query();
 
-        // select status, count(*) from ideas group by status
-
-        $Contador = $user->ideas()
+        $Contador = (clone $query)
             ->selectRaw('status, count(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status');
 
         return collect(statusIdea::cases())
-            ->mapWithKeys(fn ($status) => [
+            ->mapWithKeys(fn($status) => [
                 $status->value => $Contador->get($status->value, 0),
             ])
-            ->put('all', $user->ideas()->count());
+            ->put('all', $Contador->sum());
     }
 
     public function user(): BelongsTo

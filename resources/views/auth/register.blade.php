@@ -4,19 +4,11 @@
         <form action="/register" method="POST" class="space-y-6">
             @csrf
 
-            <x-layout.forms.field name="name" label="Nome"/>
-            <x-layout.forms.field name="email" label="Email" type='email'/>
-            <x-layout.forms.field name="password" label="Senha" type='password'/>
-
-            <fieldset class="fieldset space-y-2">
-                <legend class="fieldset-legend">Papel</legend>
-                <select name="role" class="select">
-                    <option disabled selected>Escolha seu papel</option>
-                    <option value='admin'>Admin</option>
-                    <option value='client'>Membro</option>
-                </select>
-            </fieldset>
-            <x-layout.forms.error name="role" />
+            <x-layout.forms.field name="name" label="Nome" />
+            <x-layout.forms.field name="email" label="Email" type='email' />
+            <x-layout.forms.field name="password" label="Senha" type='password' />
+            <x-layout.forms.field name="codigo_secreto" label="Código de acesso"
+                placeholder="Caso não tenha, digite 000000" />
 
             <div class="space-y-2">
                 <p>Já tem conta?
